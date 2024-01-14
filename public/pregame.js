@@ -6,7 +6,7 @@
  */
 
 
-const WSaddr = "ws://newsie.vvill.dev";
+const WSaddr = "wss://newsie.vvill.dev";
 const HTaddr = "https://newsie.vvill.dev";
 let firstWrong, gameCode, nickName, ws, owner;
 
