@@ -7,7 +7,7 @@
 
 
 const WSaddr = "ws://newsie.vvill.dev";
-const HTaddr = "http://newsie.vvill.dev";
+const HTaddr = "https://newsie.vvill.dev";
 let firstWrong, gameCode, nickName, ws, owner;
 
 //GET request to get a random subtitle from the server
