@@ -1,4 +1,4 @@
-<img src="readme_img/header.webp" width="100%">
+<a href="#"><img src="readme_img/header.webp" title="Newsie Header" width="100%"></a>
 
 <p align="middle">By Will Garrison, Joshua Brown, Sankalp Patil, and Bradley 
 Rule</p>
