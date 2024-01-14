@@ -119,6 +119,10 @@ function submitName(name){
 				ws.onopen = function(e) {
 					ws.send(gameCode+nickName);
 				}
+				ws.onerror = function(e){
+					console.error("WebSocket ERROR: "+e)
+					window.alert("Error connecting to server.");
+				}
 				ws.addEventListener("message", handleWS, true);
 			}else{
 				firstWrong = firstWrong || document.timeline.currentTime/1000;

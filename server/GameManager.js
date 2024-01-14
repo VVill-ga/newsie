@@ -6,9 +6,9 @@ class GameManager {
         this.games = new Map();
     }
 
-    newGame(gamemaster) {
+    newGame(gameowner) {
         let gamecode = this.generateGameCode();
-        this.games.set(gamecode, new Game(gamemaster, gamecode, this));
+        this.games.set(gamecode, new Game(gameowner, gamecode, this));
         return gamecode;
     }
 

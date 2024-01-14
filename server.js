@@ -57,7 +57,7 @@ app.post("/", function(req, res, next){
         if(manager.checkUsername(game, name)){
             res.status(201).send()
         }else{
-            res.status(200).send()
+            res.status(400).send()
         }
     }else{
         next()
@@ -71,9 +71,9 @@ app.post("/", function(req, res, next){
         const game = req.query.game;
 
         if (manager.checkGameCode(game)){
-            res.status(204).send()
+            res.status(200).send()
         } else {
-            res.status(400).send()
+            res.status(404).send()
         }
 
     }else{
@@ -88,7 +88,7 @@ app.post("/", function(req, res, next){
         const decodedOwnerName = decodeURIComponent(ownerName)
         res.status(201).send(manager.newGame(decodedOwnerName))
     }else{
-        res.status(404).send()
+        res.status(400).send()
     }
 })
 

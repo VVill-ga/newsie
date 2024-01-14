@@ -13,12 +13,12 @@ const GameState = {
 }
 
 class Game {
-    constructor(gamemaster, gameCode, gameManager) {
-        this.gamemaster = gamemaster;
+    constructor(gameowner, gameCode, gameManager) {
+        this.gameowner = gameowner;
         this.gameCode = gameCode;
         this.users = new Map();
         this.rounds = [];
-        this.addUser(gamemaster);
+        this.addUser(gameowner);
         this.roundNumber = -1;
         this.gamestate = GameState.lobby;
         this.gameManager = gameManager;
@@ -45,6 +45,7 @@ class Game {
     }
 
     // Returns true if user is able to be connected, false otherwise
+    // Replaces index `username` with index `websocket`
     connectUser(websocket, username) {
         if(!this.users.has(username)) return false;
 
@@ -69,14 +70,14 @@ class Game {
 
         switch(this.gamestate) {
             case GameState.roundEnd:
-                if(user.getUsername() === this.gamemaster){
+                if(user.getUsername() === this.gameowner){
                     if(data === "Next Round"){
                         this.startRound();
                     }
                 }
                 break;
             case GameState.lobby:
-                if(user.getUsername() === this.gamemaster){
+                if(user.getUsername() === this.gameowner){
                     if(data === "Start Game"){
                         this.startRound();
                     }
@@ -109,7 +110,7 @@ class Game {
         let data = {
             id: "lobby",
             usernames: usernames,
-            gamemaster: this.gamemaster
+            gameowner: this.gameowner
         }
 
         let jsonString = JSON.stringify(data);
