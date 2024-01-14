@@ -1,6 +1,7 @@
-# Newsie
+<img src="readme_img/header.webp" width="100%">
 
-By Will Garrison, Joshua Brown, Sankalp Patil, and Bradley Rule
+<p align="middle">By Will Garrison, Joshua Brown, Sankalp Patil, and Bradley 
+Rule</p>
 
 
 ## Hosting your own:
