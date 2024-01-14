@@ -92,7 +92,7 @@ function submitCode(code){
 				document.getElementById("code").parentElement.style.animation = "wrong .2s linear "+(document.timeline.currentTime/1000 - firstWrong)+"s 2";
 			}
 		};
-		xhp.open("GET", HTaddr+"?game="+code, true);
+		xhp.open("POST", HTaddr+"?game="+code, true);
 		xhp.send();
 	}else{
 		firstWrong = firstWrong || document.timeline.currentTime/1000;

@@ -45,23 +45,6 @@ app.get("/subtitle", function(req, res, next){
 })
 
 
-//Getting the game code. If there exists a game with that code, respond true.
-app.get("/", function(req, res, next){
-
-    if(req.query.game){
-        const game = req.query.game;
-
-        if (manager.checkGameCode(game)){
-            res.status(204).send()
-        } else {
-            res.status(400).send()
-        }
-
-    }else{
-        res.status(404).send()
-    }
-})
-
 
 //Getting the game code and username. If there exists a game with that code and username, respond with status 200.
 app.post("/", function(req, res, next){
@@ -76,6 +59,23 @@ app.post("/", function(req, res, next){
         }else{
             res.status(200).send()
         }
+    }else{
+        next()
+    }
+})
+
+//Getting the game code. If there exists a game with that code, respond true.
+app.post("/", function(req, res, next){
+
+    if(req.query.game){
+        const game = req.query.game;
+
+        if (manager.checkGameCode(game)){
+            res.status(204).send()
+        } else {
+            res.status(400).send()
+        }
+
     }else{
         next()
     }
