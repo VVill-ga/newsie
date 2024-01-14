@@ -1,12 +1,21 @@
-const WSaddr = "ws://66.94.127.226:3001";
-const HTaddr = "http://newsie.vvill.ga/";
+/* 	Pregame.js handles all pre-websocket front end code.
+ *
+ *	This includes a get request for the subtitle of the page, joining a game,
+ *	setting your name, creating a game, and input validation on all of those
+ *	stages. It will set up the websocket and the rest will be called in game.js
+ */
+
+
+const WSaddr = "ws://newsie.vvill.dev";
+const HTaddr = "http://newsie.vvill.dev";
 let firstWrong, gameCode, nickName, ws, owner;
 
+//GET request to get a random subtitle from the server
 let xhp = new XMLHttpRequest();
 xhp.onreadystatechange = function(){
 	document.getElementById("subtitle").innerText = xhp.responseText || "This code is full of errors! :)";
 }
-xhp.open("get", HTaddr+"subtitle", true);
+xhp.open("get", HTaddr+"/subtitle", true);
 xhp.send();
 
 function backToCode(from){
@@ -31,6 +40,7 @@ function createGame(name){
 		document.getElementById("createGame").parentElement.style.animation = "wrong .2s linear "+(document.timeline.currentTime/1000 - firstWrong)+"s 2";
 	}else{
 		document.getElementById("createGame").parentElement.style.animation = "think 1s cubic-bezier(0.5, 0, 0.5, 1) 0s infinite";
+		// Send server request to create game
 		let xhp = new XMLHttpRequest();
 		xhp.onreadystatechange = function(){
 			if(this.readyState == 4 && this.status == 201){ // 201 is Created Something (game object)
@@ -39,9 +49,9 @@ function createGame(name){
 				nickName = name;
 				document.getElementById("createGame").parentElement.style.animation = "moveOut 1s linear 0s 1";
 				setTimeout(function(){document.getElementById("createGame").parentElement.classList.remove("active")}, 1000);
-				document.getElementById("lobbyMaster").parentElement.classList.add("active");
-				document.getElementById("lobbyMaster").parentElement.style.animation = "moveIn 1s linear 0s 1";
-				document.getElementById("lobbyMaster").children[0].innerText= "Code: "+ gameCode;
+				document.getElementById("lobbyOwner").parentElement.classList.add("active");
+				document.getElementById("lobbyOwner").parentElement.style.animation = "moveIn 1s linear 0s 1";
+				document.getElementById("lobbyOwner").children[0].innerText= "Code: "+ gameCode;
 				ws = new WebSocket(WSaddr);
 				ws.onopen = function(e) {
 					ws.send(gameCode+nickName);

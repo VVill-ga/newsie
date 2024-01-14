@@ -1,9 +1,26 @@
+/* 	Game.js handles all websocket-based front end code.
+ *
+ *	Once pregame.js sets up the websocket, data will be handled through the
+ *  handleWS(e) function, and handed off to various functions. User input will
+ *  also call functions defined here.
+ */
+
+
+//submitCanvas is used to standardize all image sizes
 let submitCanvas = document.createElement('canvas');
 submitCanvas.width = 800;
 submitCanvas.height = 600;
 let voteOrder = [];
+//Countdowns for voting and submitting an image.
+//Must be global for other functions to cancel them:
 let voteInterval;
 let submitInterval;
+//Upload prompt for the canvas element
+let canvasBG = new Image();
+canvasBG.src = 'outline.svg';
+canvasBG.onload = function(){
+    document.getElementById('prompt').getElementsByTagName('canvas')[0].getContext("2d").drawImage(canvasBG, 0, 0, document.getElementById('prompt').getElementsByTagName('canvas')[0].width, document.getElementById('prompt').getElementsByTagName('canvas')[0].height);
+}
 
 function handleWS(e){
 	let data = e.data;
@@ -35,7 +52,7 @@ function handleWS(e){
 }
 
 function updateUserList(d){
-    let ul = document.getElementById("lobby"+(owner?"Master":"")).getElementsByTagName('ul')[0];
+    let ul = document.getElementById("lobby"+(owner?"Owner":"")).getElementsByTagName('ul')[0];
     ul.innerHTML = "";
     for(i of d.usernames){
         ul.innerHTML += "<li>"+i+"</li>";
@@ -96,13 +113,8 @@ function newFile(file){
 	   submitCanvas.getContext("2d").drawImage(c, 0,0, 800, 600);
 	}
 }
-let canvasBG = new Image();
-canvasBG.src = 'outline.svg';
-canvasBG.onload = function(){
-    document.getElementById('prompt').getElementsByTagName('canvas')[0].getContext("2d").drawImage(canvasBG, 0, 0, document.getElementById('prompt').getElementsByTagName('canvas')[0].width, document.getElementById('prompt').getElementsByTagName('canvas')[0].height);
-}
 function submitPhoto(){
-    if(window.confirm("You sure you want to submit?")){
+    if(window.confirm("Are you sure you want to submit?")){
         submitCanvas.toBlob((b) => {
             let reader = new FileReader();
             reader.readAsDataURL(b);

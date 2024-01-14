@@ -10,7 +10,7 @@ const wss = new ws.Server({noServer: true});
 const app = express()
 const port = 3000
 
-const contents = readFileSync("subtitles.txt", 'utf-8')
+const contents = fs.readFileSync("subtitles.txt", 'utf-8')
 const arr = contents.split(/\r?\n/)
 
 const manager = GameManager.getInstance();
