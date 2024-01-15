@@ -78,7 +78,7 @@ function submitCode(code){
 		document.getElementById("code").parentElement.style.animation = "think 1s cubic-bezier(0.5, 0, 0.5, 1) 0s infinite";
 		let xhp = new XMLHttpRequest();
 		xhp.onreadystatechange = function(){
-			if(this.readyState == 4 && this.status == 204){ //204 is No Content
+			if(this.readyState == 4 && this.status == 200){ //200 is successful
 				firstWrong = undefined;
 				gameCode = code;
 				document.getElementById("code").parentElement.style.animation = "moveOut 1s linear 0s 1";
