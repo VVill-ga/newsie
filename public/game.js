@@ -15,6 +15,8 @@ let voteOrder = [];
 //Must be global for other functions to cancel them:
 let voteInterval;
 let submitInterval;
+//Holds vote/submit data for intervals
+let intervalData;
 //Upload prompt for the canvas element
 let canvasBG = new Image();
 canvasBG.src = 'outline.svg';
@@ -66,16 +68,16 @@ function newRound(d){
     
     document.getElementById("prompt").getElementsByTagName("h2")[0].innerText = "\"" + d.headline + "\"";
     document.getElementById("prompt").getElementsByTagName("h3")[0].innerText = Math.floor((d.roundEnd - d.roundStart)/ 60000) + ":" + (Math.floor(((d.roundEnd - d.roundStart)% 60000) / 1000) + "").padStart(2,'0');
-    submitInterval = setInterval(function(d){
-    	console.log(new Date(d.roundStart) + ", to " + new Date(d.roundEnd));
-        if(new Date() < new Date(d.roundEnd)){
-            document.getElementById("prompt").getElementsByTagName("h3")[0].innerText = Math.floor((d.roundEnd - new Date())/60000) + ":" + (Math.floor(((d.roundEnd - new Date()) % 60000) / 1000) + "").padStart(2,'0');
+    intervalData = d;
+    submitInterval = setInterval(function(){
+        if(new Date() < new Date(intervalData.roundEnd)){
+            document.getElementById("prompt").getElementsByTagName("h3")[0].innerText = Math.floor((intervalData.roundEnd - new Date())/60000) + ":" + (Math.floor(((intervalData.roundEnd - new Date()) % 60000) / 1000) + "").padStart(2,'0');
         }
         else{
             document.getElementById("prompt").getElementsByTagName("h3")[0].innerText = "00:00";
             clearInterval(submitInterval);
         }
-    }(d), 1000);
+    }, 1000);
 }
 function newFile(file){
     let img = new Image();
@@ -136,15 +138,16 @@ function populateImages(d){
     
     document.getElementById("vote").getElementsByTagName('h2')[0].innerText = document.getElementById("prompt").getElementsByTagName("h2")[0].innerText;
     document.getElementById("vote").getElementsByTagName("h3")[0].innerText = Math.floor((d.voteEnd - d.voteStart)/ 60000) + ":" + (Math.floor(((d.voteEnd - d.voteStart)% 60000) / 1000) + "").padStart(2,'0');
-    voteInterval = setInterval(function(d){
-        if(Date.now() < new Date(d.voteEnd)){
-            document.getElementById("vote").getElementsByTagName("h3")[0].innerText = Math.floor((new Date(d.voteEnd) - Date.now())/60000) + ":" + (Math.floor(((new Date(d.voteEnd) - Date.now()) % 60000) / 1000) + "").padStart(2,'0');
+    intervalData = d;
+    voteInterval = setInterval(function(){
+        if(Date.now() < new Date(intervalData.voteEnd)){
+            document.getElementById("vote").getElementsByTagName("h3")[0].innerText = Math.floor((new Date(intervalData .voteEnd) - Date.now())/60000) + ":" + (Math.floor(((new Date(intervalData .voteEnd) - Date.now()) % 60000) / 1000) + "").padStart(2,'0');
         }
         else{
             document.getElementById("vote").getElementsByTagName("h3")[0].innerText = "00:00";
             clearInterval(voteInterval);
         }
-    }(d), 1000);
+    }, 1000);
     let ul = document.getElementById("vote").getElementsByTagName('ul')[0];
     ul.innerHTML = ""
     recursiveLoading(ul, d.images, 0);
