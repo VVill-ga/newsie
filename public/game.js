@@ -68,10 +68,10 @@ function newRound(d){
     document.getElementById("prompt").getElementsByTagName("h3")[0].innerText = Math.floor((d.roundEnd - d.roundStart)/ 60000) + ":" + (Math.floor(((d.roundEnd - d.roundStart)% 60000) / 1000) + "").padStart(2,'0');
     submitInterval = setInterval(function(d){
     	console.log(new Date(d.roundStart) + ", to " + new Date(d.roundEnd));
-        if(new Date() >= new Date(d.roundStart)){
+        if(new Date() < new Date(d.roundEnd)){
             document.getElementById("prompt").getElementsByTagName("h3")[0].innerText = Math.floor((d.roundEnd - new Date())/60000) + ":" + (Math.floor(((d.roundEnd - new Date()) % 60000) / 1000) + "").padStart(2,'0');
         }
-        else if(new Date() >= new Date(d.roundEnd)){
+        else{
             document.getElementById("prompt").getElementsByTagName("h3")[0].innerText = "00:00";
             clearInterval(submitInterval);
         }
@@ -137,10 +137,10 @@ function populateImages(d){
     document.getElementById("vote").getElementsByTagName('h2')[0].innerText = document.getElementById("prompt").getElementsByTagName("h2")[0].innerText;
     document.getElementById("vote").getElementsByTagName("h3")[0].innerText = Math.floor((d.voteEnd - d.voteStart)/ 60000) + ":" + (Math.floor(((d.voteEnd - d.voteStart)% 60000) / 1000) + "").padStart(2,'0');
     voteInterval = setInterval(function(d){
-        if(Date.now() >= new Date(d.voteStart)){
+        if(Date.now() < new Date(d.voteEnd)){
             document.getElementById("vote").getElementsByTagName("h3")[0].innerText = Math.floor((new Date(d.voteEnd) - Date.now())/60000) + ":" + (Math.floor(((new Date(d.voteEnd) - Date.now()) % 60000) / 1000) + "").padStart(2,'0');
         }
-        else if(new Date() >= new Date(d.roundEnd)){
+        else{
             document.getElementById("vote").getElementsByTagName("h3")[0].innerText = "00:00";
             clearInterval(voteInterval);
         }
