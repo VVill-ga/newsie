@@ -2,6 +2,7 @@
 
 <p align="middle">By Will Garrison, Joshua Brown, Sankalp Patil, and Bradley 
 Rule</p>
+<p align="middle">Using fonts by <a href="https://github.com/Omnibus-Type/Grenze-Gotisch">Omnibus-Type</a></p>
 
 
 ## Hosting your own:
@@ -52,9 +53,9 @@ follows (With a screenshot attached in the dropdown):
 </details>
 
 
-### Hypertext Messages:
-
 ---
+
+### Hypertext Messages:
 
 **GET**
 - `/subtitle`
@@ -86,9 +87,9 @@ follows (With a screenshot attached in the dropdown):
 
     - Status 201 including the newly created game code.
 
-### Websocket Messages:
-
 ---
+
+### Websocket Messages:
 
 **FROM CLIENT**
 
@@ -121,6 +122,13 @@ votes: [Int] //Array of original indexes rearranged according to vote order
 
 **FROM SERVER**
 
+- Anytime: Error Message
+```js
+id: "error"
+state: String
+level: Int //ErrorLevel, as described in Error Handling below
+message: String
+```
 - Lobby: Update users on join
 ```js
 id: "lobby"
@@ -161,3 +169,12 @@ roundNumber: Int
 id: "end"
 winner: String //Nickname of winner
 ```
+
+### Error Handling
+
+**Server Error Levels:**
+
+0. `Game Crashed`, Go back to start and do not collect $200
+1. `Error processing input`. Timer restarted, resubmit.
+2. `Error processing another player's input`. Timer restarted, do not resubmit.
+3. `Unknown websocket`. Resend "GameCode + Nickname" message

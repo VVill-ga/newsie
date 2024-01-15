@@ -200,6 +200,10 @@ class Game {
 		    let pointsEarned = {};
 		    let currentPoints = {}
 		    for(let submission of talliedVotes) {
+                if(submission.user == null){
+                    this.criticalError("Blank user detected while tallying votes");
+                    return;
+                }
 		        pointsEarned[submission.user.getUsername()] = submission.votes;
 		        submission.user.addPoints(submission.votes);
 		        currentPoints[submission.user.getUsername()] = submission.user.getPoints();
@@ -233,23 +237,40 @@ class Game {
 		    for(let user of this.users.values()) {
 		        if(user.getPoints() > topUser.getPoints()) topUser = user;
 		    }
+            if(topUser == null){
+                this.criticalError("No users detected on game end");
+                return;
+            }
+            let data = {
+                id: "end",
+                winner: topUser.getUsername()
+            }
 
-		    let data = {
-		        id: "end",
-		        winner: topUser.getUsername()
-		    }
+            let jsonString = JSON.stringify(data);
+            for(let ws of this.users.keys()) {
+                if(ws instanceof WebSocket) {
+                    ws.send(jsonString);
+                    ws.close();
+                }
+            }
+        }
+        this.gamestate = GameState.gameEnd;
+        this.gameManager.removeGame(this.gameCode);
+        this.roundNumber = -1;
+    }
 
-		    let jsonString = JSON.stringify(data);
-		    for(let ws of this.users.keys()) {
-		        if(ws instanceof WebSocket) {
-		            ws.send(jsonString);
-		            ws.close();
-		        }
-		    }
-			this.gamestate = GameState.gameEnd;
-		    this.gameManager.removeGame(this.gameCode);
-		    this.roundNumber = -1;
-		}
+    criticalError(msg){
+        let data = {
+            id: "error",
+            level: 0,
+            message: msg
+        }
+        let jsonString = JSON.stringify(data);
+        ws.send(jsonString);
+        ws.close();
+        this.gamestate = GameState.gameEnd;
+        this.gameManager.removeGame(this.gameCode);
+        this.roundNumber = -1;
     }
 }
 

@@ -50,6 +50,34 @@ function handleWS(e){
     	case "end":
     		gameOver(data);
     		break;
+        case "error":
+            switch(data.level){
+                case 0:
+                    alert("Critical Error: " + data.message);
+                    location.reload();
+                    break;
+                case 1:
+                    alert("Error processing input. Try again.");
+                    if(intervalData.voteEnd){
+                        intervalData.voteEnd = Date.now().getTime + (intervalData.voteEnd - intervalData.voteStart);
+                    }
+                    else if(intervalData.roundEnd){
+                        intervalData.roundEnd = Date.now().getTime + (intervalData.roundEnd - intervalData.roundStart);
+                    }
+                    
+                    break;
+                case 2:
+                    console.log("Had to reset timer because SOMEBODY sent bad data.");
+                    if(intervalData.voteEnd)
+                        intervalData.voteEnd = Date.now().getTime + (intervalData.voteEnd - intervalData.voteStart);
+                    else if(intervalData.roundEnd)
+                        intervalData.roundEnd = Date.now().getTime + (intervalData.roundEnd - intervalData.roundStart);
+                    break;
+                case 3:
+                    console.log("Resending gamecode+nickname");
+					ws.send(gameCode+nickName);
+
+            }
     }
 }
 
@@ -127,12 +155,13 @@ function submitPhoto(){
         submitCanvas.getContext("2d").clearRect(0,0, 800, 600);
         document.getElementById('prompt').getElementsByTagName('canvas')[0].getContext("2d").clearRect(0,0, document.getElementById('prompt').getElementsByTagName('canvas')[0].width, document.getElementById('prompt').getElementsByTagName('canvas')[0].height);
         document.getElementById('prompt').getElementsByTagName('canvas')[0].getContext("2d").drawImage(canvasBG, 0, 0, document.getElementById('prompt').getElementsByTagName('canvas')[0].width, document.getElementById('prompt').getElementsByTagName('canvas')[0].height);
+
+        document.getElementById("prompt").style.animation = "moveOut 1s linear 0s 1";
+        setTimeout(function(e){e.classList.remove("active")}(document.getElementById("prompt")), 1000);
     }
 }
 
 function populateImages(d){
-    document.getElementsByClassName("active")[0].style.animation = "moveOut 1s linear 0s 1";
-    setTimeout(function(e){e.classList.remove("active")}(document.getElementsByClassName("active")[0]), 1000);
     document.getElementById("vote").parentElement.classList.add("active");
     document.getElementById("vote").parentElement.style.animation = "moveIn 1s linear 0s 1";
     
@@ -174,6 +203,8 @@ function submitVotes(){
         if(window.confirm("Sure you wanna submit votes?")){
             ws.send(JSON.stringify({"votes": voteOrder.map(i => i.getAttribute("idx"))}));
             voteOrder = [];
+            document.getElementById("vote").style.animation = "moveOut 1s linear 0s 1";
+            setTimeout(function(e){e.classList.remove("active")}(document.getElementById("vote")), 1000);
         }
     }else{
         window.alert("You must put all your votes in order.");
@@ -182,8 +213,6 @@ function submitVotes(){
 
 function viewResult(d){
 	voteOrder = [];
-    document.getElementsByClassName("active")[0].style.animation = "moveOut 1s linear 0s 1";
-    setTimeout(function(e){e.classList.remove("active")}(document.getElementsByClassName("active")[0]), 1000);
     document.getElementById("results"+(owner?"Owner":"")).parentElement.classList.add("active");
     document.getElementById("results"+(owner?"Owner":"")).parentElement.style.animation = "moveIn 1s linear 0s 1";
     
