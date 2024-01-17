@@ -170,6 +170,8 @@ id: "end"
 winner: String //Nickname of winner
 ```
 
+---
+
 ### Error Handling
 
 **Server Error Levels:**
