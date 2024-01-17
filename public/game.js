@@ -57,23 +57,15 @@ function handleWS(e){
                     location.reload();
                     break;
                 case 1:
-                    alert("Error processing input. Try again.");
-                    if(intervalData.voteEnd){
-                        intervalData.voteEnd = Date.now().getTime + (intervalData.voteEnd - intervalData.voteStart);
+                    alert(data.msg);
+	                submitCanvas.getContext("2d").clearRect(0,0, 800, 600);
+                    for(i in voteOrder){
+                        voteOrder[i].style.border = "none";
+                        voteOrder[i].parentElement.getElementsByTagName('p')[0].innerText = "";
                     }
-                    else if(intervalData.roundEnd){
-                        intervalData.roundEnd = Date.now().getTime + (intervalData.roundEnd - intervalData.roundStart);
-                    }
-                    
+                    voteOrder = [];
                     break;
                 case 2:
-                    console.log("Had to reset timer because SOMEBODY sent bad data.");
-                    if(intervalData.voteEnd)
-                        intervalData.voteEnd = Date.now().getTime + (intervalData.voteEnd - intervalData.voteStart);
-                    else if(intervalData.roundEnd)
-                        intervalData.roundEnd = Date.now().getTime + (intervalData.roundEnd - intervalData.roundStart);
-                    break;
-                case 3:
                     console.log("Resending gamecode+nickname");
 					ws.send(gameCode+nickName);
 

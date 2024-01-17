@@ -23,6 +23,15 @@ class Round {
 
     submitImage(user, json) {
         if(this.submissionComplete) return;
+        if(!json.image){
+            let data = {
+                id: "error",
+                level: 1,
+                message: "Image not received. Try again."
+            }
+            let jsonString = JSON.stringify(data);
+            user.websocket.send(jsonString);
+        }
 
         this.submissions.push({
             user: user,
@@ -47,6 +56,15 @@ class Round {
     submitVotes(user, json) {
         if(this.votingComplete) return;
 
+        if(!json.image){
+            let data = {
+                id: "error",
+                level: 1,
+                message: "Votes not received. Try again."
+            }
+            let jsonString = JSON.stringify(data);
+            user.websocket.send(jsonString);
+        }
         this.votes.push({
             user: user,
             votes: json.votes

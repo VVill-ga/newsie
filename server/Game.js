@@ -95,8 +95,8 @@ class Game {
                     this.endVoting();
                 }
                 break;
-            default:
-                websocket.send("ERROR: Currently not accepting messages, in state: " + this.gamestate);
+            default: //A bug maybe game's over and they're still sending stuff
+                this.criticalError("Unknown Game State", websocket);
                 break;
         }
     }
@@ -201,7 +201,9 @@ class Game {
 		    let currentPoints = {}
 		    for(let submission of talliedVotes) {
                 if(submission.user == null){
-                    this.criticalError("Blank user detected while tallying votes");
+                    for(let ws of this.users.keys())
+                        if(ws instanceof WebSocket)
+                            this.criticalError("Blank user detected while tallying votes", ws);
                     return;
                 }
 		        pointsEarned[submission.user.getUsername()] = submission.votes;
@@ -238,7 +240,9 @@ class Game {
 		        if(user.getPoints() > topUser.getPoints()) topUser = user;
 		    }
             if(topUser == null){
-                this.criticalError("No users detected on game end");
+                for(let ws of this.users.keys())
+                    if(ws instanceof WebSocket)
+                        this.criticalError("No users detected on Game End", ws);
                 return;
             }
             let data = {
@@ -259,7 +263,7 @@ class Game {
         this.roundNumber = -1;
     }
 
-    criticalError(msg){
+    criticalError(msg, ws){
         let data = {
             id: "error",
             level: 0,

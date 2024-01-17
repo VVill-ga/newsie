@@ -177,6 +177,5 @@ winner: String //Nickname of winner
 **Server Error Levels:**
 
 0. `Game Crashed`, Go back to start and do not collect $200
-1. `Error processing input`. Timer restarted, resubmit.
-2. `Error processing another player's input`. Timer restarted, do not resubmit.
-3. `Unknown websocket`. Resend "GameCode + Nickname" message
+1. `Error processing input`. Resubmit entry/votes.
+2. `Unknown websocket`. Resend "GameCode + Nickname" message
