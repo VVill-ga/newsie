@@ -56,7 +56,7 @@ class Round {
     submitVotes(user, json) {
         if(this.votingComplete) return;
 
-        if(!json.image){
+        if(!json.votes){
             let data = {
                 id: "error",
                 level: 1,
@@ -64,6 +64,7 @@ class Round {
             }
             let jsonString = JSON.stringify(data);
             user.websocket.send(jsonString);
+            return;
         }
         this.votes.push({
             user: user,

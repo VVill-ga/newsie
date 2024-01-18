@@ -57,7 +57,7 @@ function handleWS(e){
                     location.reload();
                     break;
                 case 1:
-                    alert(data.msg);
+                    alert(data.message);
 	                submitCanvas.getContext("2d").clearRect(0,0, 800, 600);
                     for(i in voteOrder){
                         voteOrder[i].style.border = "none";
