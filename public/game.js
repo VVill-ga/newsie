@@ -149,7 +149,7 @@ function submitPhoto(){
         document.getElementById('prompt').getElementsByTagName('canvas')[0].getContext("2d").drawImage(canvasBG, 0, 0, document.getElementById('prompt').getElementsByTagName('canvas')[0].width, document.getElementById('prompt').getElementsByTagName('canvas')[0].height);
 
         document.getElementById("prompt").style.animation = "moveOut 1s linear 0s 1";
-        setTimeout(function(e){e.classList.remove("active")}(document.getElementById("prompt")), 1000);
+        setTimeout(function(e){e.classList.remove("active")}(document.getElementById("prompt").parentElement), 1000);
     }
 }
 
@@ -196,7 +196,7 @@ function submitVotes(){
             ws.send(JSON.stringify({"votes": voteOrder.map(i => i.getAttribute("idx"))}));
             voteOrder = [];
             document.getElementById("vote").style.animation = "moveOut 1s linear 0s 1";
-            setTimeout(function(e){e.classList.remove("active")}(document.getElementById("vote")), 1000);
+            setTimeout(function(e){e.classList.remove("active")}(document.getElementById("vote").parentElement), 1000);
         }
     }else{
         window.alert("You must put all your votes in order.");
