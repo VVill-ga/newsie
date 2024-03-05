@@ -1,0 +1,14 @@
+[Unit]
+Description=The server for the web game Newsie
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/newsie/
+ExecStartPre=npm i
+ExecStart=node server.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

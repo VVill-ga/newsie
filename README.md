@@ -1,4 +1,4 @@
-<a href="#"><img src="readme_img/header.webp" title="Newsie Header" width="100%"></a>
+<a href="https://newsie.vvill.dev"><img src="readme_img/header.webp" title="Newsie Header" width="100%"></a>
 
 <p align="middle">By Will Garrison, Joshua Brown, Sankalp Patil, and Bradley 
 Rule</p>
@@ -7,15 +7,29 @@ Rule</p>
 
 ## Hosting your own:
 
-`git clone` the repo
+### Optional Configuration
 
-`npm i` to install dependencies
+By default, this program expects to be located in `/var/www/newsie`. To
+run the program elsewhere, modify `WorkingDirectory` in `newsie.service`
+or run without Systemd.
 
-Change `public/pregame.js` variables to your own domain
+By default, this program will run on port 3000. To choose a different port,
+modify the `PORT` variable in `server.js`.
 
-Route port 3000 as needed (located in server.js if change needed)
+### Required Configuration
 
-Run `node server.js`
+Change variables `WSaddr` and `HTaddr` at the top of `public/pregame.js` 
+to point to your own domain or IP address.
+
+Copy `newsie.service` to `/usr/lib/systemd/system/newsie.service` or other 
+directory scanned by Systemd.
+
+Run `systemctl daemon-reload` to make Systemd discover the new service file.
+
+Run `sudo systemctl enable newsie` and then `sudo systemctl start newsie` 
+to begin your newsie server.
+
+> To run without Systemd for testing or otherwise, simply run `node server.js`.
 
 Enjoy!
 
