@@ -9,24 +9,20 @@ Rule</p>
 
 ### Optional Configuration
 
-By default, this program expects to be located in `/var/www/newsie`. To
+- By default, this program expects to be located in `/var/www/newsie`. To
 run the program elsewhere, modify `WorkingDirectory` in `newsie.service`
 or run without Systemd.
-
-By default, this program will run on port 3000. To choose a different port,
+- By default, this program will run on port 3000. To choose a different port,
 modify the `PORT` variable in `server.js`.
 
 ### Required Configuration
 
-Change variables `WSaddr` and `HTaddr` at the top of `public/pregame.js` 
+- Change variables `WSaddr` and `HTaddr` at the top of `public/pregame.js` 
 to point to your own domain or IP address.
-
-Copy `newsie.service` to `/usr/lib/systemd/system/newsie.service` or other 
+- Copy `newsie.service` to `/usr/lib/systemd/system/newsie.service` or other 
 directory scanned by Systemd.
-
-Run `systemctl daemon-reload` to make Systemd discover the new service file.
-
-Run `sudo systemctl enable newsie` and then `sudo systemctl start newsie` 
+- Run `systemctl daemon-reload` to make Systemd discover the new service file.
+- Run `sudo systemctl enable newsie` and then `sudo systemctl start newsie` 
 to begin your newsie server.
 
 > To run without Systemd for testing or otherwise, simply run `node server.js`.
